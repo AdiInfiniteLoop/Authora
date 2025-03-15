@@ -1,10 +1,10 @@
 -- +goose Up
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE TABLE users
 (
-    id       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id       UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name     VARCHAR(50) NOT NULL UNIQUE,
     userName VARCHAR(50) NOT NULL UNIQUE,
     email   VARCHAR(50) NOT NULL UNIQUE,

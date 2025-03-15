@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"database/sql"
 	"github.com/AdiInfiniteLoop/Authora/handlers"
 	"github.com/AdiInfiniteLoop/Authora/internal/config"
@@ -12,7 +11,6 @@ import (
 	"github.com/redis/go-redis/v9"
 	"log"
 	"os"
-	"time"
 )
 
 func main() {
@@ -22,13 +20,13 @@ func main() {
 		Password: "",
 		DB:       0,
 	})
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	pong, err := client.Ping(ctx).Result()
-	log.Println(pong, err)
-	//Initialize the database here
+	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	//defer cancel()
+	//pong, err := client.Ping(ctx).Result()
+	//log.Println(pong, err)
 
-	err = godotenv.Load(".env")
+	//Initialize the database here
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Println("Cannot find the env ")
 	}
@@ -49,7 +47,7 @@ func main() {
 		log.Println("Error While Querying the database")
 	} else {
 		log.Println(testQuery)
-		log.Println("Connection Successful ! Test Query ran successfully")
+		log.Println("Connection Successful !!! Test Query ran successfully")
 	}
 
 	//Setting Api Configuration
@@ -63,10 +61,11 @@ func main() {
 		ApiConfig: apiConfig,
 	}
 
-	//Initializew the routers
+	//Initialize the routers
 	router := gin.Default() //Sets up the router
 
 	router.GET("/health-check", LocalApiConfig.HandlerCheckReadiness)
-
+	router.POST("/sign-in", LocalApiConfig.SignInHandler)
+	router.POST("/logout", LocalApiConfig.LogoutHandler)
 	log.Fatal(router.Run(":8080"))
 }
