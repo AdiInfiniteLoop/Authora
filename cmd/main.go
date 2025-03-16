@@ -67,5 +67,6 @@ func main() {
 	router.GET("/health-check", LocalApiConfig.HandlerCheckReadiness)
 	router.POST("/sign-in", LocalApiConfig.SignInHandler)
 	router.POST("/logout", LocalApiConfig.LogoutHandler)
+	router.POST("/sign-up", LocalApiConfig.CreateUserHandler)
 	log.Fatal(router.Run(":8080"))
 }

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/AdiInfiniteLoop/Authora/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -66,15 +67,17 @@ func (lac *LocalApiConfig) SignInHandler(c *gin.Context) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(os.Getenv("JWT_SECRET"))
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	// Whenever you're working with JWT signing in Go (using the standard jwt-go library),
+	// you'll need to convert string secrets to byte slices.
 	if err != nil {
 		log.Println("Error while Signing Up the String", err)
 		return
 	}
+	fmt.Println(tokenString, " is the token string")
 
 	//Create a sessionId
 	sessionId := uuid.New().String()
-
 	//Create a session interface
 	sessionData := map[string]interface{}{
 		"token":  tokenString,
