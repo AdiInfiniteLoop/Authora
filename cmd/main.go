@@ -5,6 +5,7 @@ import (
 	"github.com/AdiInfiniteLoop/Authora/handlers"
 	"github.com/AdiInfiniteLoop/Authora/internal/config"
 	"github.com/AdiInfiniteLoop/Authora/internal/database"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -65,6 +66,7 @@ func main() {
 	router := gin.Default() //Sets up the router
 
 	//Cors
+	router.Use(cors.Default())
 
 	authorized := router.Group("/")
 	authorized.Use(LocalApiConfig.AuthMiddleware())
