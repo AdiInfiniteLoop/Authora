@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1cf93f68-d21a-4e93-b221-68fecbe0c9e9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/handlers/handlers_auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c41ebc98-a244-49c6-8671-549c4cc31cf3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c41ebc98-a244-49c6-8671-549c4cc31cf3.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c41ebc98-a244-49c6-8671-549c4cc31cf3/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c41ebc98-a244-49c6-8671-549c4cc31cf3/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/validation.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/schema/0001_users.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/schema/0001_users.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/handlers_auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/handlers_auth.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +56,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "editor.preferences.completion"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [

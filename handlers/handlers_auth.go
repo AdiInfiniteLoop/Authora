@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/AdiInfiniteLoop/Authora/models"
+	"github.com/AdiInfiniteLoop/Authora/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -39,12 +40,20 @@ func (lac *LocalApiConfig) SignInHandler(c *gin.Context) {
 		return
 	}
 
+	var val = utils.ValidationOfUser(userToAuth)
+	if len(val) > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "error",
+			"error":  val,
+		})
+		return
+	}
 	//Fetch the user from database and check if user exists or not
 	foundUser, err := lac.DB.FindUserByEmail(c, userToAuth.Email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"status":  "error",
-			"message": "No such user found",
+			"status": "error",
+			"error":  "No such user found",
 		})
 		return
 	}
