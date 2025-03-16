@@ -3,4 +3,4 @@ Authora is a robust authentication service built using Go with Gin, PostgreSQL, 
 
 ## Upcoming Changes
 Realtime Backend Soon...
-(Pusher + Kafka Integratsion)
+(Pusher + Kafka Integration)
