@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/AdiInfiniteLoop/Authora/models"
 	"github.com/AdiInfiniteLoop/Authora/utils"
 	"github.com/gin-gonic/gin"
@@ -25,7 +24,7 @@ type JWTOutput struct {
 }
 
 type SessionData struct {
-	Token  string    `json:"string"`
+	Token  string    `json:"token"`
 	UserID uuid.UUID `json:"user_id"`
 }
 
@@ -83,7 +82,6 @@ func (lac *LocalApiConfig) SignInHandler(c *gin.Context) {
 		log.Println("Error while Signing Up the String", err)
 		return
 	}
-	fmt.Println(tokenString, " is the token string")
 
 	//Create a sessionId
 	sessionId := uuid.New().String()
@@ -110,7 +108,6 @@ func (lac *LocalApiConfig) SignInHandler(c *gin.Context) {
 		})
 		return
 	}
-
 	c.SetCookie("session_id", sessionId, int(time.Until(expirationTime).Seconds()), "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -148,4 +145,68 @@ func (lac *LocalApiConfig) LogoutHandler(c *gin.Context) {
 		"message": "Log Out Successful",
 	})
 	return
+}
+
+// middleware must always return a gin.handler{}
+
+func (lac *LocalApiConfig) AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		//Get the sessionId from cookie
+		//Get the Session Data as JSON from Redis
+		//Convert the Session Data into golang struct
+		//Get the Token and User ID from the unmarshalled session data
+		//Check the availability then store in request Context(e.g., req.user)
+
+		sessionId, err := c.Cookie("session_id")
+
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"status": "error",
+				"error":  "unauthorized - no session",
+			})
+			return
+		}
+
+		sessionDataJSON, err := lac.RedisClient.Get(c, sessionId).Result()
+
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"status": "error",
+				"error":  "unauthorized - no redis session data",
+			})
+			return
+		}
+		var sessionData SessionData
+		err = json.Unmarshal([]byte(sessionDataJSON), &sessionData)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				"status": "error",
+				"error":  "cannot unmarshal data",
+			})
+			return
+		}
+		parsedId, err := uuid.Parse(sessionData.UserID.String())
+		sessionData.UserID = parsedId
+		token, err := jwt.ParseWithClaims(sessionData.Token, &Claims{},
+			func(token *jwt.Token) (interface{}, error) {
+				return []byte(os.Getenv("JWT_SECRET")), nil
+			})
+
+		if err != nil || !token.Valid {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"status": "error",
+				"error":  "invalid token",
+			})
+			return
+		}
+		c.Set("userId", sessionData.UserID)
+		c.Next()
+	}
+}
+
+func (lac *LocalApiConfig) HandlerAuthRoute(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "success",
+		"message": "Authenticated Route working well",
+	})
 }

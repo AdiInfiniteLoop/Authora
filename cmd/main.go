@@ -64,7 +64,15 @@ func main() {
 	//Initialize the routers
 	router := gin.Default() //Sets up the router
 
-	router.GET("/health-check", LocalApiConfig.HandlerCheckReadiness)
+	//Cors
+
+	authorized := router.Group("/")
+	authorized.Use(LocalApiConfig.AuthMiddleware())
+	{
+		authorized.GET("/health-check", LocalApiConfig.HandlerCheckReadiness)
+		authorized.GET("/auth-route", LocalApiConfig.HandlerAuthRoute)
+	}
+
 	router.POST("/sign-in", LocalApiConfig.SignInHandler)
 	router.POST("/logout", LocalApiConfig.LogoutHandler)
 	router.POST("/sign-up", LocalApiConfig.CreateUserHandler)
